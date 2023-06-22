@@ -1,0 +1,79 @@
+html,body {
+  position: relative;
+  height: 90%;
+}
+
+.fst {
+    height: 1000px;
+    width: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: #cecece;
+    justify-content: center;
+}
+
+.fst img {
+    display: block;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 25px;
+}
+
+.fst h2{
+    padding-top: 140px; 
+    padding-left: 450px;
+    font-size: 32px;
+    font-weight: 900;
+}
+
+/* swiper */
+
+.swiper {
+    width: 66%;
+    height: 85%;
+    margin: 80px;
+    margin-top: 50px;
+}
+
+.coffee-intro .swiper-slide {
+    text-align: center;
+    font-size: 18px;
+    height: calc((100% - 30px) / 2) !important;
+
+    /* Center slide text vertically */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.coffee-intro .swiper-prev,
+.coffee-intro .swiper-next {
+    width: 42px;
+    height: 42px;
+    border: 2px solid #333;
+    border-radius: 50%;
+    position: absolute;
+    top: 300px;
+    z-index: 1;
+    cursor: pointer;
+    outline: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: .4s;
+}
+.coffee-intro .swiper-prev {
+    left: 30%;
+    margin-left: -370px;
+}
+.coffee-intro .swiper-next {
+    right: 30%;
+    margin-right: -370px;
+}
+
+.coffee-intro .swiper-prev:hover,
+.coffee-intro .swiper-next:hover {
+    background-color: #333;
+    color: #fff;
+}

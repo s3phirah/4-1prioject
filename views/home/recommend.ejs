@@ -1,0 +1,81 @@
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    
+    
+    <!-- tensorflowjs -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.0.0/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-vis"></script>
+
+    <script type="application/octet-stream" src="./js/tensor.js"></script> 
+    <script type="application/octet-stream" src="./js/weather.js"></script>
+    <script type="application/octet-stream" src="./js/10.3.js"></script>
+</head>
+<body>
+    <h4>Tiny TFJS example<hr/></h4>
+    <div id="micro-out-div">Training...</div>
+    <script>
+        // 데이터
+        // var 온도 = [20, 21, 22, 23];
+        // var 판매량 = [40, 42, 44, 46]; // 결과
+        // 만들것 => 봄 여름 가을 겨울 30개씩하고 
+        // 날씨 맑 흐림 비 3가지로 나눔 =>이거하면 한글써야댐 그냥 넘기고 아래걸로
+        // 습도 즉당히 랜덤함수 돌림 맑음, 흐림, 비는 별개로 둬야함
+        // 바람 즉당히 랜덤함수 약간 조정 
+        // 온도 요건 날씨, 계절따라 별도로 정함
+
+        var tf_idf = [
+        [1.1,0,0,0,0,0,0.7,0],
+        [0,1.1,0,0,0,0,0.7,0],
+        [0,1.1,1.8,0,0,0,0,0],
+        [0,0,0,1.8,0,0,0.7,0],
+        [0,0,0,0,1.8,0,0,1.8],
+        [1.1,0,0,0,0,1.8,0,0]
+        ]
+
+        var 접속 = [
+            [1,1,0,1,1,0],
+            [0,1,1,1,1,0],
+            [1,1,1,1,1,1],
+            [1,1,1,1,1,1],
+            [1,1,1,1,1,0],
+            [1,1,1,1,1,1]
+        ]
+
+        
+
+        var 원인 = tf.tensor(판매_원인);
+        var 결과 = tf.tensor(판매량);
+
+        // 모델
+        var X = tf.input({shape: [4]}); //  input layer
+        var H = tf.layers.dense({units: 4}).apply(X); // hidden layer 음수로 떨어질 일이 없기 때문에 relu 사용
+        var Y = tf.layers.dense({units: 1}).apply(H); // output layer 
+        var model = tf.model({inputs : X, outputs : Y});
+        var compileParam = {optimizer : tf.train.adam(), loss: tf.losses.meanSquaredError}
+        model.compile(compileParam);
+        
+        //  학습
+        // var fitParam = {epochs : 100}
+        var _history = [];
+        var fitParam = {
+            epochs : 1500,
+            callbacks: {
+                onEpochEnd:
+                function(epoch, logs) {
+                    console.log('epoch', epoch,logs, 'RMSE=>', Math.sqrt(logs.loss));
+                    _history.push(logs);
+                    tfvis.show.history({name: 'loss', tap : '역사'}, _history, ['loss']);
+                }    
+            }
+        }
+        model.fit(원인, 결과, fitParam).then(function(result) {
+            var 예측 = model.predict(원인);
+            예측.print();
+        });
+    </script>
+</body>
+</html>
